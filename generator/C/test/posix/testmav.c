@@ -120,6 +120,9 @@ static void print_message(mavlink_message_t *msg)
 	}
 	const mavlink_field_info_t *f = m->fields;
 	unsigned i;
+	printf("sysid:%d ", msg->sysid);
+	printf("compid:%d ", msg->compid);
+	printf("seq:%d ", msg->seq);
 	printf("%s { ", m->name);
 	for (i=0; i<m->num_fields; i++) {
 		print_field(msg, &f[i]);
@@ -140,7 +143,14 @@ static void comm_send_ch(mavlink_channel_t chan, uint8_t c)
 	status.signing = &signing_in[chan];
         status.signing_streams = &signing_streams_in;
 #endif
+#define SHOW_AS_HEX 1
+#ifdef SHOW_AS_HEX
+    printf("%02x ",c);
+#endif
 	if (mavlink_parse_char(chan, c, &last_msg, &status)) {
+#ifdef SHOW_AS_HEX
+    printf("\n");
+#endif
 		print_message(&last_msg);
 		chan_counts[chan]++;
 		/* channel 0 gets 3 messages per message, because of
@@ -172,6 +182,7 @@ int main(void)
 {
 	mavlink_channel_t chan;
 
+        printf("Running mavlink_test_all\n");
 	mavlink_test_all(11, 10, &last_msg);
 	for (chan=MAVLINK_COMM_0; chan<=MAVLINK_COMM_1; chan++) {
 		printf("Received %u messages on channel %u OK\n", 
@@ -183,6 +194,18 @@ int main(void)
 	}
 	printf("No errors detected\n");
 
+        printf("Running mavlink_test_minimal\n");
+        mavlink_test_minimal(11, 10, &last_msg);
+	for (chan=MAVLINK_COMM_0; chan<=MAVLINK_COMM_1; chan++) {
+		printf("Received %u messages on channel %u OK\n", 
+		       chan_counts[chan], (unsigned)chan);
+	}
+	if (error_count != 0) {
+		printf("Error count %u\n", error_count);
+		exit(1);
+	}
+	printf("No errors detected\n");
+        
 #ifdef MAVLINK_SIGNING_FLAG_SIGN_OUTGOING
 	mavlink_status_t *status;
 
