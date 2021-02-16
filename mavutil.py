@@ -18,7 +18,7 @@ from pymavlink import mavexpression
 # at all we avoid throwing an exception if it isn't installed
 try:
     import json
-    from pymavlink.dialects.v10 import ardupilotmega
+    from pymavlink.dialects.v20 import ardupilotmega
 except Exception:
     pass
 
@@ -103,15 +103,10 @@ def set_dialect(dialect):
     '''
     global mavlink, current_dialect
     from .generator import mavparse
-    if 'MAVLINK20' in os.environ:
-        wire_protocol = mavparse.PROTOCOL_2_0
-        modname = "pymavlink.dialects.v20." + dialect
-    elif mavlink is None or mavlink.WIRE_PROTOCOL_VERSION == "1.0" or not 'MAVLINK09' in os.environ:
-        wire_protocol = mavparse.PROTOCOL_1_0
-        modname = "pymavlink.dialects.v10." + dialect
-    else:
-        wire_protocol = mavparse.PROTOCOL_0_9
-        modname = "pymavlink.dialects.v09." + dialect
+   
+   # removed the possibility of using anything but mavlink 2.0
+    wire_protocol = mavparse.PROTOCOL_2_0
+    modname = "pymavlink.dialects.v20." + dialect
 
     try:
         mod = __import__(modname)
@@ -715,6 +710,7 @@ class mavfile(object):
         else:
             MAV_ACTION_SET_MANUAL = 12
             self.mav.action_send(self.target_system, self.target_component, MAV_ACTION_SET_MANUAL)
+            
 
     def set_mode_fbwa(self):
         '''enter FBWA mode'''
