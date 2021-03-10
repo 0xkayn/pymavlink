@@ -5433,10 +5433,6 @@ MAVLINK_MSG_ID_GOPRO_GET_RESPONSE = 217
 MAVLINK_MSG_ID_GOPRO_SET_REQUEST = 218
 MAVLINK_MSG_ID_GOPRO_SET_RESPONSE = 219
 MAVLINK_MSG_ID_RPM = 226
-MAVLINK_MSG_ID_MAVSH_INIT = 420
-MAVLINK_MSG_ID_MAVSH_ACK = 421
-MAVLINK_MSG_ID_MAVSH_EXEC = 422
-MAVLINK_MSG_ID_MAVSH_RESPONSE = 423
 MAVLINK_MSG_ID_DEVICE_OP_READ = 11000
 MAVLINK_MSG_ID_DEVICE_OP_READ_REPLY = 11001
 MAVLINK_MSG_ID_DEVICE_OP_WRITE = 11002
@@ -5452,6 +5448,10 @@ MAVLINK_MSG_ID_OSD_PARAM_CONFIG_REPLY = 11034
 MAVLINK_MSG_ID_OSD_PARAM_SHOW_CONFIG = 11035
 MAVLINK_MSG_ID_OSD_PARAM_SHOW_CONFIG_REPLY = 11036
 MAVLINK_MSG_ID_OBSTACLE_DISTANCE_3D = 11037
+MAVLINK_MSG_ID_MAVSH_INIT = 11420
+MAVLINK_MSG_ID_MAVSH_ACK = 11421
+MAVLINK_MSG_ID_MAVSH_EXEC = 11422
+MAVLINK_MSG_ID_MAVSH_RESPONSE = 11423
 MAVLINK_MSG_ID_SYS_STATUS = 1
 MAVLINK_MSG_ID_SYSTEM_TIME = 2
 MAVLINK_MSG_ID_PING = 4
@@ -7411,152 +7411,6 @@ class MAVLink_rpm_message(MAVLink_message):
         def pack(self, mav, force_mavlink1=False):
                 return MAVLink_message.pack(self, mav, 207, struct.pack('<ff', self.rpm1, self.rpm2), force_mavlink1=force_mavlink1)
 
-class MAVLink_mavsh_init_message(MAVLink_message):
-        '''
-        Initialize MAVSH command mode
-        '''
-        id = MAVLINK_MSG_ID_MAVSH_INIT
-        name = 'MAVSH_INIT'
-        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
-        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
-        fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t']
-        fielddisplays_by_name = {}
-        fieldenums_by_name = {"setup_flag": "MAVSH_SETUP>"}
-        fieldunits_by_name = {}
-        format = '<BBBBB'
-        native_format = bytearray('<BBBBB', 'ascii')
-        orders = [0, 1, 2, 3, 4]
-        lengths = [1, 1, 1, 1, 1]
-        array_lengths = [0, 0, 0, 0, 0]
-        crc_extra = 56
-        unpacker = struct.Struct('<BBBBB')
-        instance_field = None
-        instance_offset = -1
-
-        def __init__(self, sys_id, comp_id, target_system, target_component, setup_flag):
-                MAVLink_message.__init__(self, MAVLink_mavsh_init_message.id, MAVLink_mavsh_init_message.name)
-                self._fieldnames = MAVLink_mavsh_init_message.fieldnames
-                self._instance_field = MAVLink_mavsh_init_message.instance_field
-                self._instance_offset = MAVLink_mavsh_init_message.instance_offset
-                self.sys_id = sys_id
-                self.comp_id = comp_id
-                self.target_system = target_system
-                self.target_component = target_component
-                self.setup_flag = setup_flag
-
-        def pack(self, mav, force_mavlink1=False):
-                return MAVLink_message.pack(self, mav, 56, struct.pack('<BBBBB', self.sys_id, self.comp_id, self.target_system, self.target_component, self.setup_flag), force_mavlink1=force_mavlink1)
-
-class MAVLink_mavsh_ack_message(MAVLink_message):
-        '''
-        ACK initialization of MAVSH command mode
-        '''
-        id = MAVLINK_MSG_ID_MAVSH_ACK
-        name = 'MAVSH_ACK'
-        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
-        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
-        fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t']
-        fielddisplays_by_name = {}
-        fieldenums_by_name = {"setup_flag": "MAVSH_SETUP"}
-        fieldunits_by_name = {}
-        format = '<BBBBB'
-        native_format = bytearray('<BBBBB', 'ascii')
-        orders = [0, 1, 2, 3, 4]
-        lengths = [1, 1, 1, 1, 1]
-        array_lengths = [0, 0, 0, 0, 0]
-        crc_extra = 185
-        unpacker = struct.Struct('<BBBBB')
-        instance_field = None
-        instance_offset = -1
-
-        def __init__(self, sys_id, comp_id, target_system, target_component, setup_flag):
-                MAVLink_message.__init__(self, MAVLink_mavsh_ack_message.id, MAVLink_mavsh_ack_message.name)
-                self._fieldnames = MAVLink_mavsh_ack_message.fieldnames
-                self._instance_field = MAVLink_mavsh_ack_message.instance_field
-                self._instance_offset = MAVLink_mavsh_ack_message.instance_offset
-                self.sys_id = sys_id
-                self.comp_id = comp_id
-                self.target_system = target_system
-                self.target_component = target_component
-                self.setup_flag = setup_flag
-
-        def pack(self, mav, force_mavlink1=False):
-                return MAVLink_message.pack(self, mav, 185, struct.pack('<BBBBB', self.sys_id, self.comp_id, self.target_system, self.target_component, self.setup_flag), force_mavlink1=force_mavlink1)
-
-class MAVLink_mavsh_exec_message(MAVLink_message):
-        '''
-        Execute a command on companion computer
-        '''
-        id = MAVLINK_MSG_ID_MAVSH_EXEC
-        name = 'MAVSH_EXEC'
-        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status', 'payload']
-        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status', 'payload']
-        fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'char']
-        fielddisplays_by_name = {}
-        fieldenums_by_name = {"status": "MAVSH_STATUS"}
-        fieldunits_by_name = {}
-        format = '<BBBBB70s'
-        native_format = bytearray('<BBBBBc', 'ascii')
-        orders = [0, 1, 2, 3, 4, 5]
-        lengths = [1, 1, 1, 1, 1, 1]
-        array_lengths = [0, 0, 0, 0, 0, 70]
-        crc_extra = 128
-        unpacker = struct.Struct('<BBBBB70s')
-        instance_field = None
-        instance_offset = -1
-
-        def __init__(self, sys_id, comp_id, target_system, target_component, status, payload):
-                MAVLink_message.__init__(self, MAVLink_mavsh_exec_message.id, MAVLink_mavsh_exec_message.name)
-                self._fieldnames = MAVLink_mavsh_exec_message.fieldnames
-                self._instance_field = MAVLink_mavsh_exec_message.instance_field
-                self._instance_offset = MAVLink_mavsh_exec_message.instance_offset
-                self.sys_id = sys_id
-                self.comp_id = comp_id
-                self.target_system = target_system
-                self.target_component = target_component
-                self.status = status
-                self.payload = payload
-
-        def pack(self, mav, force_mavlink1=False):
-                return MAVLink_message.pack(self, mav, 128, struct.pack('<BBBBB70s', self.sys_id, self.comp_id, self.target_system, self.target_component, self.status, self.payload), force_mavlink1=force_mavlink1)
-
-class MAVLink_mavsh_response_message(MAVLink_message):
-        '''
-        Execute a command on companion computer
-        '''
-        id = MAVLINK_MSG_ID_MAVSH_RESPONSE
-        name = 'MAVSH_RESPONSE'
-        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status', 'response']
-        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status', 'response']
-        fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'char']
-        fielddisplays_by_name = {}
-        fieldenums_by_name = {"status": "MAVSH_STATUS"}
-        fieldunits_by_name = {}
-        format = '<BBBBB70s'
-        native_format = bytearray('<BBBBBc', 'ascii')
-        orders = [0, 1, 2, 3, 4, 5]
-        lengths = [1, 1, 1, 1, 1, 1]
-        array_lengths = [0, 0, 0, 0, 0, 70]
-        crc_extra = 175
-        unpacker = struct.Struct('<BBBBB70s')
-        instance_field = None
-        instance_offset = -1
-
-        def __init__(self, sys_id, comp_id, target_system, target_component, status, response):
-                MAVLink_message.__init__(self, MAVLink_mavsh_response_message.id, MAVLink_mavsh_response_message.name)
-                self._fieldnames = MAVLink_mavsh_response_message.fieldnames
-                self._instance_field = MAVLink_mavsh_response_message.instance_field
-                self._instance_offset = MAVLink_mavsh_response_message.instance_offset
-                self.sys_id = sys_id
-                self.comp_id = comp_id
-                self.target_system = target_system
-                self.target_component = target_component
-                self.status = status
-                self.response = response
-
-        def pack(self, mav, force_mavlink1=False):
-                return MAVLink_message.pack(self, mav, 175, struct.pack('<BBBBB70s', self.sys_id, self.comp_id, self.target_system, self.target_component, self.status, self.response), force_mavlink1=force_mavlink1)
-
 class MAVLink_device_op_read_message(MAVLink_message):
         '''
         Read registers for a device.
@@ -8125,6 +7979,152 @@ class MAVLink_obstacle_distance_3d_message(MAVLink_message):
 
         def pack(self, mav, force_mavlink1=False):
                 return MAVLink_message.pack(self, mav, 130, struct.pack('<IfffffHBB', self.time_boot_ms, self.x, self.y, self.z, self.min_distance, self.max_distance, self.obstacle_id, self.sensor_type, self.frame), force_mavlink1=force_mavlink1)
+
+class MAVLink_mavsh_init_message(MAVLink_message):
+        '''
+        Initialize MAVSH command mode
+        '''
+        id = MAVLINK_MSG_ID_MAVSH_INIT
+        name = 'MAVSH_INIT'
+        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
+        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
+        fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t']
+        fielddisplays_by_name = {}
+        fieldenums_by_name = {"setup_flag": "MAVSH_SETUP>"}
+        fieldunits_by_name = {}
+        format = '<BBBBB'
+        native_format = bytearray('<BBBBB', 'ascii')
+        orders = [0, 1, 2, 3, 4]
+        lengths = [1, 1, 1, 1, 1]
+        array_lengths = [0, 0, 0, 0, 0]
+        crc_extra = 56
+        unpacker = struct.Struct('<BBBBB')
+        instance_field = None
+        instance_offset = -1
+
+        def __init__(self, sys_id, comp_id, target_system, target_component, setup_flag):
+                MAVLink_message.__init__(self, MAVLink_mavsh_init_message.id, MAVLink_mavsh_init_message.name)
+                self._fieldnames = MAVLink_mavsh_init_message.fieldnames
+                self._instance_field = MAVLink_mavsh_init_message.instance_field
+                self._instance_offset = MAVLink_mavsh_init_message.instance_offset
+                self.sys_id = sys_id
+                self.comp_id = comp_id
+                self.target_system = target_system
+                self.target_component = target_component
+                self.setup_flag = setup_flag
+
+        def pack(self, mav, force_mavlink1=False):
+                return MAVLink_message.pack(self, mav, 56, struct.pack('<BBBBB', self.sys_id, self.comp_id, self.target_system, self.target_component, self.setup_flag), force_mavlink1=force_mavlink1)
+
+class MAVLink_mavsh_ack_message(MAVLink_message):
+        '''
+        ACK initialization of MAVSH command mode
+        '''
+        id = MAVLINK_MSG_ID_MAVSH_ACK
+        name = 'MAVSH_ACK'
+        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
+        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
+        fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t']
+        fielddisplays_by_name = {}
+        fieldenums_by_name = {"setup_flag": "MAVSH_SETUP"}
+        fieldunits_by_name = {}
+        format = '<BBBBB'
+        native_format = bytearray('<BBBBB', 'ascii')
+        orders = [0, 1, 2, 3, 4]
+        lengths = [1, 1, 1, 1, 1]
+        array_lengths = [0, 0, 0, 0, 0]
+        crc_extra = 185
+        unpacker = struct.Struct('<BBBBB')
+        instance_field = None
+        instance_offset = -1
+
+        def __init__(self, sys_id, comp_id, target_system, target_component, setup_flag):
+                MAVLink_message.__init__(self, MAVLink_mavsh_ack_message.id, MAVLink_mavsh_ack_message.name)
+                self._fieldnames = MAVLink_mavsh_ack_message.fieldnames
+                self._instance_field = MAVLink_mavsh_ack_message.instance_field
+                self._instance_offset = MAVLink_mavsh_ack_message.instance_offset
+                self.sys_id = sys_id
+                self.comp_id = comp_id
+                self.target_system = target_system
+                self.target_component = target_component
+                self.setup_flag = setup_flag
+
+        def pack(self, mav, force_mavlink1=False):
+                return MAVLink_message.pack(self, mav, 185, struct.pack('<BBBBB', self.sys_id, self.comp_id, self.target_system, self.target_component, self.setup_flag), force_mavlink1=force_mavlink1)
+
+class MAVLink_mavsh_exec_message(MAVLink_message):
+        '''
+        Execute a command on companion computer
+        '''
+        id = MAVLINK_MSG_ID_MAVSH_EXEC
+        name = 'MAVSH_EXEC'
+        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status', 'payload']
+        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status', 'payload']
+        fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'char']
+        fielddisplays_by_name = {}
+        fieldenums_by_name = {"status": "MAVSH_STATUS"}
+        fieldunits_by_name = {}
+        format = '<BBBBB70s'
+        native_format = bytearray('<BBBBBc', 'ascii')
+        orders = [0, 1, 2, 3, 4, 5]
+        lengths = [1, 1, 1, 1, 1, 1]
+        array_lengths = [0, 0, 0, 0, 0, 70]
+        crc_extra = 128
+        unpacker = struct.Struct('<BBBBB70s')
+        instance_field = None
+        instance_offset = -1
+
+        def __init__(self, sys_id, comp_id, target_system, target_component, status, payload):
+                MAVLink_message.__init__(self, MAVLink_mavsh_exec_message.id, MAVLink_mavsh_exec_message.name)
+                self._fieldnames = MAVLink_mavsh_exec_message.fieldnames
+                self._instance_field = MAVLink_mavsh_exec_message.instance_field
+                self._instance_offset = MAVLink_mavsh_exec_message.instance_offset
+                self.sys_id = sys_id
+                self.comp_id = comp_id
+                self.target_system = target_system
+                self.target_component = target_component
+                self.status = status
+                self.payload = payload
+
+        def pack(self, mav, force_mavlink1=False):
+                return MAVLink_message.pack(self, mav, 128, struct.pack('<BBBBB70s', self.sys_id, self.comp_id, self.target_system, self.target_component, self.status, self.payload), force_mavlink1=force_mavlink1)
+
+class MAVLink_mavsh_response_message(MAVLink_message):
+        '''
+        Execute a command on companion computer
+        '''
+        id = MAVLINK_MSG_ID_MAVSH_RESPONSE
+        name = 'MAVSH_RESPONSE'
+        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'cmd_status', 'response']
+        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'cmd_status', 'response']
+        fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'char']
+        fielddisplays_by_name = {}
+        fieldenums_by_name = {"cmd_status": "MAVSH_CMD_STATUS"}
+        fieldunits_by_name = {}
+        format = '<BBBBB100s'
+        native_format = bytearray('<BBBBBc', 'ascii')
+        orders = [0, 1, 2, 3, 4, 5]
+        lengths = [1, 1, 1, 1, 1, 1]
+        array_lengths = [0, 0, 0, 0, 0, 100]
+        crc_extra = 240
+        unpacker = struct.Struct('<BBBBB100s')
+        instance_field = None
+        instance_offset = -1
+
+        def __init__(self, sys_id, comp_id, target_system, target_component, cmd_status, response):
+                MAVLink_message.__init__(self, MAVLink_mavsh_response_message.id, MAVLink_mavsh_response_message.name)
+                self._fieldnames = MAVLink_mavsh_response_message.fieldnames
+                self._instance_field = MAVLink_mavsh_response_message.instance_field
+                self._instance_offset = MAVLink_mavsh_response_message.instance_offset
+                self.sys_id = sys_id
+                self.comp_id = comp_id
+                self.target_system = target_system
+                self.target_component = target_component
+                self.cmd_status = cmd_status
+                self.response = response
+
+        def pack(self, mav, force_mavlink1=False):
+                return MAVLink_message.pack(self, mav, 240, struct.pack('<BBBBB100s', self.sys_id, self.comp_id, self.target_system, self.target_component, self.cmd_status, self.response), force_mavlink1=force_mavlink1)
 
 class MAVLink_sys_status_message(MAVLink_message):
         '''
@@ -15318,10 +15318,6 @@ mavlink_map = {
         MAVLINK_MSG_ID_GOPRO_SET_REQUEST : MAVLink_gopro_set_request_message,
         MAVLINK_MSG_ID_GOPRO_SET_RESPONSE : MAVLink_gopro_set_response_message,
         MAVLINK_MSG_ID_RPM : MAVLink_rpm_message,
-        MAVLINK_MSG_ID_MAVSH_INIT : MAVLink_mavsh_init_message,
-        MAVLINK_MSG_ID_MAVSH_ACK : MAVLink_mavsh_ack_message,
-        MAVLINK_MSG_ID_MAVSH_EXEC : MAVLink_mavsh_exec_message,
-        MAVLINK_MSG_ID_MAVSH_RESPONSE : MAVLink_mavsh_response_message,
         MAVLINK_MSG_ID_DEVICE_OP_READ : MAVLink_device_op_read_message,
         MAVLINK_MSG_ID_DEVICE_OP_READ_REPLY : MAVLink_device_op_read_reply_message,
         MAVLINK_MSG_ID_DEVICE_OP_WRITE : MAVLink_device_op_write_message,
@@ -15337,6 +15333,10 @@ mavlink_map = {
         MAVLINK_MSG_ID_OSD_PARAM_SHOW_CONFIG : MAVLink_osd_param_show_config_message,
         MAVLINK_MSG_ID_OSD_PARAM_SHOW_CONFIG_REPLY : MAVLink_osd_param_show_config_reply_message,
         MAVLINK_MSG_ID_OBSTACLE_DISTANCE_3D : MAVLink_obstacle_distance_3d_message,
+        MAVLINK_MSG_ID_MAVSH_INIT : MAVLink_mavsh_init_message,
+        MAVLINK_MSG_ID_MAVSH_ACK : MAVLink_mavsh_ack_message,
+        MAVLINK_MSG_ID_MAVSH_EXEC : MAVLink_mavsh_exec_message,
+        MAVLINK_MSG_ID_MAVSH_RESPONSE : MAVLink_mavsh_response_message,
         MAVLINK_MSG_ID_SYS_STATUS : MAVLink_sys_status_message,
         MAVLINK_MSG_ID_SYSTEM_TIME : MAVLink_system_time_message,
         MAVLINK_MSG_ID_PING : MAVLink_ping_message,
@@ -17299,114 +17299,6 @@ class MAVLink(object):
                 '''
                 return self.send(self.rpm_encode(rpm1, rpm2), force_mavlink1=force_mavlink1)
 
-        def mavsh_init_encode(self, sys_id, comp_id, target_system, target_component, setup_flag):
-                '''
-                Initialize MAVSH command mode
-
-                sys_id                    : Origin system id (type:uint8_t)
-                comp_id                   : Origin component id (type:uint8_t)
-                target_system             : Target system id (type:uint8_t)
-                target_component          : Target component id (type:uint8_t)
-                setup_flag                : Init status flag (type:uint8_t, values:MAVSH_SETUP>)
-
-                '''
-                return MAVLink_mavsh_init_message(sys_id, comp_id, target_system, target_component, setup_flag)
-
-        def mavsh_init_send(self, sys_id, comp_id, target_system, target_component, setup_flag, force_mavlink1=False):
-                '''
-                Initialize MAVSH command mode
-
-                sys_id                    : Origin system id (type:uint8_t)
-                comp_id                   : Origin component id (type:uint8_t)
-                target_system             : Target system id (type:uint8_t)
-                target_component          : Target component id (type:uint8_t)
-                setup_flag                : Init status flag (type:uint8_t, values:MAVSH_SETUP>)
-
-                '''
-                return self.send(self.mavsh_init_encode(sys_id, comp_id, target_system, target_component, setup_flag), force_mavlink1=force_mavlink1)
-
-        def mavsh_ack_encode(self, sys_id, comp_id, target_system, target_component, setup_flag):
-                '''
-                ACK initialization of MAVSH command mode
-
-                sys_id                    : Origin system id (type:uint8_t)
-                comp_id                   : Origin component id (type:uint8_t)
-                target_system             : Target system id (type:uint8_t)
-                target_component          : Target component id (type:uint8_t)
-                setup_flag                : MAVSH init status flag (type:uint8_t, values:MAVSH_SETUP)
-
-                '''
-                return MAVLink_mavsh_ack_message(sys_id, comp_id, target_system, target_component, setup_flag)
-
-        def mavsh_ack_send(self, sys_id, comp_id, target_system, target_component, setup_flag, force_mavlink1=False):
-                '''
-                ACK initialization of MAVSH command mode
-
-                sys_id                    : Origin system id (type:uint8_t)
-                comp_id                   : Origin component id (type:uint8_t)
-                target_system             : Target system id (type:uint8_t)
-                target_component          : Target component id (type:uint8_t)
-                setup_flag                : MAVSH init status flag (type:uint8_t, values:MAVSH_SETUP)
-
-                '''
-                return self.send(self.mavsh_ack_encode(sys_id, comp_id, target_system, target_component, setup_flag), force_mavlink1=force_mavlink1)
-
-        def mavsh_exec_encode(self, sys_id, comp_id, target_system, target_component, status, payload):
-                '''
-                Execute a command on companion computer
-
-                sys_id                    : Origin system id (type:uint8_t)
-                comp_id                   : Origin component id (type:uint8_t)
-                target_system             : Target system id (type:uint8_t)
-                target_component          : Target component id (type:uint8_t)
-                status                    : Command status (type:uint8_t, values:MAVSH_STATUS)
-                payload                   : Command to execute on remote MAVSH. (type:char)
-
-                '''
-                return MAVLink_mavsh_exec_message(sys_id, comp_id, target_system, target_component, status, payload)
-
-        def mavsh_exec_send(self, sys_id, comp_id, target_system, target_component, status, payload, force_mavlink1=False):
-                '''
-                Execute a command on companion computer
-
-                sys_id                    : Origin system id (type:uint8_t)
-                comp_id                   : Origin component id (type:uint8_t)
-                target_system             : Target system id (type:uint8_t)
-                target_component          : Target component id (type:uint8_t)
-                status                    : Command status (type:uint8_t, values:MAVSH_STATUS)
-                payload                   : Command to execute on remote MAVSH. (type:char)
-
-                '''
-                return self.send(self.mavsh_exec_encode(sys_id, comp_id, target_system, target_component, status, payload), force_mavlink1=force_mavlink1)
-
-        def mavsh_response_encode(self, sys_id, comp_id, target_system, target_component, status, response):
-                '''
-                Execute a command on companion computer
-
-                sys_id                    : Origin system id (type:uint8_t)
-                comp_id                   : Origin component id (type:uint8_t)
-                target_system             : Target system id (type:uint8_t)
-                target_component          : Target component id (type:uint8_t)
-                status                    : Command status (type:uint8_t, values:MAVSH_STATUS)
-                response                  : Output of command. (type:char)
-
-                '''
-                return MAVLink_mavsh_response_message(sys_id, comp_id, target_system, target_component, status, response)
-
-        def mavsh_response_send(self, sys_id, comp_id, target_system, target_component, status, response, force_mavlink1=False):
-                '''
-                Execute a command on companion computer
-
-                sys_id                    : Origin system id (type:uint8_t)
-                comp_id                   : Origin component id (type:uint8_t)
-                target_system             : Target system id (type:uint8_t)
-                target_component          : Target component id (type:uint8_t)
-                status                    : Command status (type:uint8_t, values:MAVSH_STATUS)
-                response                  : Output of command. (type:char)
-
-                '''
-                return self.send(self.mavsh_response_encode(sys_id, comp_id, target_system, target_component, status, response), force_mavlink1=force_mavlink1)
-
         def device_op_read_encode(self, target_system, target_component, request_id, bustype, bus, address, busname, regstart, count, bank=0):
                 '''
                 Read registers for a device.
@@ -17850,6 +17742,114 @@ class MAVLink(object):
 
                 '''
                 return self.send(self.obstacle_distance_3d_encode(time_boot_ms, sensor_type, frame, obstacle_id, x, y, z, min_distance, max_distance), force_mavlink1=force_mavlink1)
+
+        def mavsh_init_encode(self, sys_id, comp_id, target_system, target_component, setup_flag):
+                '''
+                Initialize MAVSH command mode
+
+                sys_id                    : Origin system id (type:uint8_t)
+                comp_id                   : Origin component id (type:uint8_t)
+                target_system             : Target system id (type:uint8_t)
+                target_component          : Target component id (type:uint8_t)
+                setup_flag                : Init status flag (type:uint8_t, values:MAVSH_SETUP>)
+
+                '''
+                return MAVLink_mavsh_init_message(sys_id, comp_id, target_system, target_component, setup_flag)
+
+        def mavsh_init_send(self, sys_id, comp_id, target_system, target_component, setup_flag, force_mavlink1=False):
+                '''
+                Initialize MAVSH command mode
+
+                sys_id                    : Origin system id (type:uint8_t)
+                comp_id                   : Origin component id (type:uint8_t)
+                target_system             : Target system id (type:uint8_t)
+                target_component          : Target component id (type:uint8_t)
+                setup_flag                : Init status flag (type:uint8_t, values:MAVSH_SETUP>)
+
+                '''
+                return self.send(self.mavsh_init_encode(sys_id, comp_id, target_system, target_component, setup_flag), force_mavlink1=force_mavlink1)
+
+        def mavsh_ack_encode(self, sys_id, comp_id, target_system, target_component, setup_flag):
+                '''
+                ACK initialization of MAVSH command mode
+
+                sys_id                    : Origin system id (type:uint8_t)
+                comp_id                   : Origin component id (type:uint8_t)
+                target_system             : Target system id (type:uint8_t)
+                target_component          : Target component id (type:uint8_t)
+                setup_flag                : MAVSH init status flag (type:uint8_t, values:MAVSH_SETUP)
+
+                '''
+                return MAVLink_mavsh_ack_message(sys_id, comp_id, target_system, target_component, setup_flag)
+
+        def mavsh_ack_send(self, sys_id, comp_id, target_system, target_component, setup_flag, force_mavlink1=False):
+                '''
+                ACK initialization of MAVSH command mode
+
+                sys_id                    : Origin system id (type:uint8_t)
+                comp_id                   : Origin component id (type:uint8_t)
+                target_system             : Target system id (type:uint8_t)
+                target_component          : Target component id (type:uint8_t)
+                setup_flag                : MAVSH init status flag (type:uint8_t, values:MAVSH_SETUP)
+
+                '''
+                return self.send(self.mavsh_ack_encode(sys_id, comp_id, target_system, target_component, setup_flag), force_mavlink1=force_mavlink1)
+
+        def mavsh_exec_encode(self, sys_id, comp_id, target_system, target_component, status, payload):
+                '''
+                Execute a command on companion computer
+
+                sys_id                    : Origin system id (type:uint8_t)
+                comp_id                   : Origin component id (type:uint8_t)
+                target_system             : Target system id (type:uint8_t)
+                target_component          : Target component id (type:uint8_t)
+                status                    : MAVSH status (type:uint8_t, values:MAVSH_STATUS)
+                payload                   : Command to execute on remote MAVSH. (type:char)
+
+                '''
+                return MAVLink_mavsh_exec_message(sys_id, comp_id, target_system, target_component, status, payload)
+
+        def mavsh_exec_send(self, sys_id, comp_id, target_system, target_component, status, payload, force_mavlink1=False):
+                '''
+                Execute a command on companion computer
+
+                sys_id                    : Origin system id (type:uint8_t)
+                comp_id                   : Origin component id (type:uint8_t)
+                target_system             : Target system id (type:uint8_t)
+                target_component          : Target component id (type:uint8_t)
+                status                    : MAVSH status (type:uint8_t, values:MAVSH_STATUS)
+                payload                   : Command to execute on remote MAVSH. (type:char)
+
+                '''
+                return self.send(self.mavsh_exec_encode(sys_id, comp_id, target_system, target_component, status, payload), force_mavlink1=force_mavlink1)
+
+        def mavsh_response_encode(self, sys_id, comp_id, target_system, target_component, cmd_status, response):
+                '''
+                Execute a command on companion computer
+
+                sys_id                    : Origin system id (type:uint8_t)
+                comp_id                   : Origin component id (type:uint8_t)
+                target_system             : Target system id (type:uint8_t)
+                target_component          : Target component id (type:uint8_t)
+                cmd_status                : Command status (type:uint8_t, values:MAVSH_CMD_STATUS)
+                response                  : Output of command. (type:char)
+
+                '''
+                return MAVLink_mavsh_response_message(sys_id, comp_id, target_system, target_component, cmd_status, response)
+
+        def mavsh_response_send(self, sys_id, comp_id, target_system, target_component, cmd_status, response, force_mavlink1=False):
+                '''
+                Execute a command on companion computer
+
+                sys_id                    : Origin system id (type:uint8_t)
+                comp_id                   : Origin component id (type:uint8_t)
+                target_system             : Target system id (type:uint8_t)
+                target_component          : Target component id (type:uint8_t)
+                cmd_status                : Command status (type:uint8_t, values:MAVSH_CMD_STATUS)
+                response                  : Output of command. (type:char)
+
+                '''
+                return self.send(self.mavsh_response_encode(sys_id, comp_id, target_system, target_component, cmd_status, response), force_mavlink1=force_mavlink1)
 
         def sys_status_encode(self, onboard_control_sensors_present, onboard_control_sensors_enabled, onboard_control_sensors_health, load, voltage_battery, current_battery, battery_remaining, drop_rate_comm, errors_comm, errors_count1, errors_count2, errors_count3, errors_count4):
                 '''
