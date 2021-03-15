@@ -986,6 +986,15 @@ enums['MAV_CMD'][215].param[4] = '''Empty.'''
 enums['MAV_CMD'][215].param[5] = '''Empty.'''
 enums['MAV_CMD'][215].param[6] = '''Empty.'''
 enums['MAV_CMD'][215].param[7] = '''Empty.'''
+MAV_CMD_DO_SPRAYER = 216 # Control attached liquid sprayer
+enums['MAV_CMD'][216] = EnumEntry('MAV_CMD_DO_SPRAYER', '''Control attached liquid sprayer''')
+enums['MAV_CMD'][216].param[1] = '''0: disable sprayer. 1: enable sprayer.'''
+enums['MAV_CMD'][216].param[2] = '''Empty.'''
+enums['MAV_CMD'][216].param[3] = '''Empty.'''
+enums['MAV_CMD'][216].param[4] = '''Empty.'''
+enums['MAV_CMD'][216].param[5] = '''Empty.'''
+enums['MAV_CMD'][216].param[6] = '''Empty.'''
+enums['MAV_CMD'][216].param[7] = '''Empty.'''
 MAV_CMD_DO_MOUNT_CONTROL_QUAT = 220 # Mission command to control a camera or antenna mount, using a
                         # quaternion as reference.
 enums['MAV_CMD'][220] = EnumEntry('MAV_CMD_DO_MOUNT_CONTROL_QUAT', '''Mission command to control a camera or antenna mount, using a quaternion as reference.''')
@@ -2819,8 +2828,12 @@ MAVSH_INACTIVE = 0 # No active MAVSH session exists
 enums['MAVSH_STATUS'][0] = EnumEntry('MAVSH_INACTIVE', '''No active MAVSH session exists''')
 MAVSH_ACTIVE = 1 # An active MAVSH session exists
 enums['MAVSH_STATUS'][1] = EnumEntry('MAVSH_ACTIVE', '''An active MAVSH session exists''')
-MAVSH_STATUS_ENUM_END = 2 # 
-enums['MAVSH_STATUS'][2] = EnumEntry('MAVSH_STATUS_ENUM_END', '''''')
+MAVSH_EXIT = 3 # Attempting to teardown MAVSH session
+enums['MAVSH_STATUS'][3] = EnumEntry('MAVSH_EXIT', '''Attempting to teardown MAVSH session''')
+MAVSH_EXITING = 4 # MAVSH session teardown accepted
+enums['MAVSH_STATUS'][4] = EnumEntry('MAVSH_EXITING', '''MAVSH session teardown accepted''')
+MAVSH_STATUS_ENUM_END = 5 # 
+enums['MAVSH_STATUS'][5] = EnumEntry('MAVSH_STATUS_ENUM_END', '''''')
 
 # MAVSH_SETUP
 enums['MAVSH_SETUP'] = {}
@@ -2830,10 +2843,12 @@ MAVSH_SESSION_ACCEPTED = 1 # MAVSH session accepted
 enums['MAVSH_SETUP'][1] = EnumEntry('MAVSH_SESSION_ACCEPTED', '''MAVSH session accepted''')
 MAVSH_SESSION_REJECTED = 2 # MAVSH session rejected
 enums['MAVSH_SETUP'][2] = EnumEntry('MAVSH_SESSION_REJECTED', '''MAVSH session rejected''')
-MAVSH_SESSION_EXIT = 3 # Attempting to exit MAVSH session
-enums['MAVSH_SETUP'][3] = EnumEntry('MAVSH_SESSION_EXIT', '''Attempting to exit MAVSH session''')
-MAVSH_SETUP_ENUM_END = 4 # 
-enums['MAVSH_SETUP'][4] = EnumEntry('MAVSH_SETUP_ENUM_END', '''''')
+MAVSH_SESSION_EXISTS = 3 # MAVSH session rejected because session already exists
+enums['MAVSH_SETUP'][3] = EnumEntry('MAVSH_SESSION_EXISTS', '''MAVSH session rejected because session already exists''')
+MAVSH_SESSION_EXIT = 4 # Attempting to exit MAVSH session
+enums['MAVSH_SETUP'][4] = EnumEntry('MAVSH_SESSION_EXIT', '''Attempting to exit MAVSH session''')
+MAVSH_SETUP_ENUM_END = 5 # 
+enums['MAVSH_SETUP'][5] = EnumEntry('MAVSH_SETUP_ENUM_END', '''''')
 
 # MAVSH_COMMAND_STATUS
 enums['MAVSH_COMMAND_STATUS'] = {}
