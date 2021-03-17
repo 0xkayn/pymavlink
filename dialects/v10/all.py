@@ -2824,31 +2824,31 @@ enums['OSD_PARAM_CONFIG_ERROR'][4] = EnumEntry('OSD_PARAM_CONFIG_ERROR_ENUM_END'
 
 # MAVSH_STATUS
 enums['MAVSH_STATUS'] = {}
-MAVSH_INACTIVE = 0 # No active MAVSH session exists
-enums['MAVSH_STATUS'][0] = EnumEntry('MAVSH_INACTIVE', '''No active MAVSH session exists''')
-MAVSH_ACTIVE = 1 # An active MAVSH session exists
-enums['MAVSH_STATUS'][1] = EnumEntry('MAVSH_ACTIVE', '''An active MAVSH session exists''')
-MAVSH_EXIT = 3 # Attempting to teardown MAVSH session
-enums['MAVSH_STATUS'][3] = EnumEntry('MAVSH_EXIT', '''Attempting to teardown MAVSH session''')
-MAVSH_EXITING = 4 # MAVSH session teardown accepted
-enums['MAVSH_STATUS'][4] = EnumEntry('MAVSH_EXITING', '''MAVSH session teardown accepted''')
-MAVSH_STATUS_ENUM_END = 5 # 
-enums['MAVSH_STATUS'][5] = EnumEntry('MAVSH_STATUS_ENUM_END', '''''')
+MAVSH_INACTIVE = 0 # MAVSH session currently inactive
+enums['MAVSH_STATUS'][0] = EnumEntry('MAVSH_INACTIVE', '''MAVSH session currently inactive''')
+MAVSH_INIT = 1 # Attempting to init MAVSH
+enums['MAVSH_STATUS'][1] = EnumEntry('MAVSH_INIT', '''Attempting to init MAVSH''')
+MAVSH_ACCEPTED = 2 # MAVSH session accepted
+enums['MAVSH_STATUS'][2] = EnumEntry('MAVSH_ACCEPTED', '''MAVSH session accepted''')
+MAVSH_ACTIVE = 3 # MAVSH session currently active
+enums['MAVSH_STATUS'][3] = EnumEntry('MAVSH_ACTIVE', '''MAVSH session currently active''')
+MAVSH_REJECTED = 4 # MGeneric MAVSH setup request rejected
+enums['MAVSH_STATUS'][4] = EnumEntry('MAVSH_REJECTED', '''MGeneric MAVSH setup request rejected''')
+MAVSH_SESSION_EXISTS = 5 # MAVSH session rejected because session already exists
+enums['MAVSH_STATUS'][5] = EnumEntry('MAVSH_SESSION_EXISTS', '''MAVSH session rejected because session already exists''')
+MAVSH_STATUS_ENUM_END = 6 # 
+enums['MAVSH_STATUS'][6] = EnumEntry('MAVSH_STATUS_ENUM_END', '''''')
 
-# MAVSH_SETUP
-enums['MAVSH_SETUP'] = {}
-MAVSH_SESSION_INIT = 0 # Attempting to init MAVSH
-enums['MAVSH_SETUP'][0] = EnumEntry('MAVSH_SESSION_INIT', '''Attempting to init MAVSH''')
-MAVSH_SESSION_ACCEPTED = 1 # MAVSH session accepted
-enums['MAVSH_SETUP'][1] = EnumEntry('MAVSH_SESSION_ACCEPTED', '''MAVSH session accepted''')
-MAVSH_SESSION_REJECTED = 2 # MAVSH session rejected
-enums['MAVSH_SETUP'][2] = EnumEntry('MAVSH_SESSION_REJECTED', '''MAVSH session rejected''')
-MAVSH_SESSION_EXISTS = 3 # MAVSH session rejected because session already exists
-enums['MAVSH_SETUP'][3] = EnumEntry('MAVSH_SESSION_EXISTS', '''MAVSH session rejected because session already exists''')
-MAVSH_SESSION_EXIT = 4 # Attempting to exit MAVSH session
-enums['MAVSH_SETUP'][4] = EnumEntry('MAVSH_SESSION_EXIT', '''Attempting to exit MAVSH session''')
-MAVSH_SETUP_ENUM_END = 5 # 
-enums['MAVSH_SETUP'][5] = EnumEntry('MAVSH_SETUP_ENUM_END', '''''')
+# MAVSH_SHUTDOWN_STATUS
+enums['MAVSH_SHUTDOWN_STATUS'] = {}
+MAVSH_SHUTDOWN = 0 # Attempting to shutdown MAVSH session
+enums['MAVSH_SHUTDOWN_STATUS'][0] = EnumEntry('MAVSH_SHUTDOWN', '''Attempting to shutdown MAVSH session''')
+MAVSH_EXITING = 1 # MAVSH session shutdown accepted
+enums['MAVSH_SHUTDOWN_STATUS'][1] = EnumEntry('MAVSH_EXITING', '''MAVSH session shutdown accepted''')
+MAVSH_SHUTDOWN_NOT_ALLOWED = 2 # Shutdown not allowed - invalid sysid/compid value
+enums['MAVSH_SHUTDOWN_STATUS'][2] = EnumEntry('MAVSH_SHUTDOWN_NOT_ALLOWED', '''Shutdown not allowed - invalid sysid/compid value''')
+MAVSH_SHUTDOWN_STATUS_ENUM_END = 3 # 
+enums['MAVSH_SHUTDOWN_STATUS'][3] = EnumEntry('MAVSH_SHUTDOWN_STATUS_ENUM_END', '''''')
 
 # MAVSH_COMMAND_STATUS
 enums['MAVSH_COMMAND_STATUS'] = {}

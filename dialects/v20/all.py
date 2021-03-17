@@ -2824,31 +2824,31 @@ enums['OSD_PARAM_CONFIG_ERROR'][4] = EnumEntry('OSD_PARAM_CONFIG_ERROR_ENUM_END'
 
 # MAVSH_STATUS
 enums['MAVSH_STATUS'] = {}
-MAVSH_INACTIVE = 0 # No active MAVSH session exists
-enums['MAVSH_STATUS'][0] = EnumEntry('MAVSH_INACTIVE', '''No active MAVSH session exists''')
-MAVSH_ACTIVE = 1 # An active MAVSH session exists
-enums['MAVSH_STATUS'][1] = EnumEntry('MAVSH_ACTIVE', '''An active MAVSH session exists''')
-MAVSH_EXIT = 3 # Attempting to teardown MAVSH session
-enums['MAVSH_STATUS'][3] = EnumEntry('MAVSH_EXIT', '''Attempting to teardown MAVSH session''')
-MAVSH_EXITING = 4 # MAVSH session teardown accepted
-enums['MAVSH_STATUS'][4] = EnumEntry('MAVSH_EXITING', '''MAVSH session teardown accepted''')
-MAVSH_STATUS_ENUM_END = 5 # 
-enums['MAVSH_STATUS'][5] = EnumEntry('MAVSH_STATUS_ENUM_END', '''''')
+MAVSH_INACTIVE = 0 # MAVSH session currently inactive
+enums['MAVSH_STATUS'][0] = EnumEntry('MAVSH_INACTIVE', '''MAVSH session currently inactive''')
+MAVSH_INIT = 1 # Attempting to init MAVSH
+enums['MAVSH_STATUS'][1] = EnumEntry('MAVSH_INIT', '''Attempting to init MAVSH''')
+MAVSH_ACCEPTED = 2 # MAVSH session accepted
+enums['MAVSH_STATUS'][2] = EnumEntry('MAVSH_ACCEPTED', '''MAVSH session accepted''')
+MAVSH_ACTIVE = 3 # MAVSH session currently active
+enums['MAVSH_STATUS'][3] = EnumEntry('MAVSH_ACTIVE', '''MAVSH session currently active''')
+MAVSH_REJECTED = 4 # MGeneric MAVSH setup request rejected
+enums['MAVSH_STATUS'][4] = EnumEntry('MAVSH_REJECTED', '''MGeneric MAVSH setup request rejected''')
+MAVSH_SESSION_EXISTS = 5 # MAVSH session rejected because session already exists
+enums['MAVSH_STATUS'][5] = EnumEntry('MAVSH_SESSION_EXISTS', '''MAVSH session rejected because session already exists''')
+MAVSH_STATUS_ENUM_END = 6 # 
+enums['MAVSH_STATUS'][6] = EnumEntry('MAVSH_STATUS_ENUM_END', '''''')
 
-# MAVSH_SETUP
-enums['MAVSH_SETUP'] = {}
-MAVSH_SESSION_INIT = 0 # Attempting to init MAVSH
-enums['MAVSH_SETUP'][0] = EnumEntry('MAVSH_SESSION_INIT', '''Attempting to init MAVSH''')
-MAVSH_SESSION_ACCEPTED = 1 # MAVSH session accepted
-enums['MAVSH_SETUP'][1] = EnumEntry('MAVSH_SESSION_ACCEPTED', '''MAVSH session accepted''')
-MAVSH_SESSION_REJECTED = 2 # MAVSH session rejected
-enums['MAVSH_SETUP'][2] = EnumEntry('MAVSH_SESSION_REJECTED', '''MAVSH session rejected''')
-MAVSH_SESSION_EXISTS = 3 # MAVSH session rejected because session already exists
-enums['MAVSH_SETUP'][3] = EnumEntry('MAVSH_SESSION_EXISTS', '''MAVSH session rejected because session already exists''')
-MAVSH_SESSION_EXIT = 4 # Attempting to exit MAVSH session
-enums['MAVSH_SETUP'][4] = EnumEntry('MAVSH_SESSION_EXIT', '''Attempting to exit MAVSH session''')
-MAVSH_SETUP_ENUM_END = 5 # 
-enums['MAVSH_SETUP'][5] = EnumEntry('MAVSH_SETUP_ENUM_END', '''''')
+# MAVSH_SHUTDOWN_STATUS
+enums['MAVSH_SHUTDOWN_STATUS'] = {}
+MAVSH_SHUTDOWN = 0 # Attempting to shutdown MAVSH session
+enums['MAVSH_SHUTDOWN_STATUS'][0] = EnumEntry('MAVSH_SHUTDOWN', '''Attempting to shutdown MAVSH session''')
+MAVSH_EXITING = 1 # MAVSH session shutdown accepted
+enums['MAVSH_SHUTDOWN_STATUS'][1] = EnumEntry('MAVSH_EXITING', '''MAVSH session shutdown accepted''')
+MAVSH_SHUTDOWN_NOT_ALLOWED = 2 # Shutdown not allowed - invalid sysid/compid value
+enums['MAVSH_SHUTDOWN_STATUS'][2] = EnumEntry('MAVSH_SHUTDOWN_NOT_ALLOWED', '''Shutdown not allowed - invalid sysid/compid value''')
+MAVSH_SHUTDOWN_STATUS_ENUM_END = 3 # 
+enums['MAVSH_SHUTDOWN_STATUS'][3] = EnumEntry('MAVSH_SHUTDOWN_STATUS_ENUM_END', '''''')
 
 # MAVSH_COMMAND_STATUS
 enums['MAVSH_COMMAND_STATUS'] = {}
@@ -8003,23 +8003,23 @@ class MAVLink_mavsh_init_message(MAVLink_message):
         '''
         id = MAVLINK_MSG_ID_MAVSH_INIT
         name = 'MAVSH_INIT'
-        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
-        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
+        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status_flag']
+        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status_flag']
         fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t']
         fielddisplays_by_name = {}
-        fieldenums_by_name = {"setup_flag": "MAVSH_SETUP>"}
+        fieldenums_by_name = {"status_flag": "MAVSH_STATUS>"}
         fieldunits_by_name = {}
         format = '<BBBBB'
         native_format = bytearray('<BBBBB', 'ascii')
         orders = [0, 1, 2, 3, 4]
         lengths = [1, 1, 1, 1, 1]
         array_lengths = [0, 0, 0, 0, 0]
-        crc_extra = 56
+        crc_extra = 120
         unpacker = struct.Struct('<BBBBB')
         instance_field = None
         instance_offset = -1
 
-        def __init__(self, sys_id, comp_id, target_system, target_component, setup_flag):
+        def __init__(self, sys_id, comp_id, target_system, target_component, status_flag):
                 MAVLink_message.__init__(self, MAVLink_mavsh_init_message.id, MAVLink_mavsh_init_message.name)
                 self._fieldnames = MAVLink_mavsh_init_message.fieldnames
                 self._instance_field = MAVLink_mavsh_init_message.instance_field
@@ -8028,10 +8028,10 @@ class MAVLink_mavsh_init_message(MAVLink_message):
                 self.comp_id = comp_id
                 self.target_system = target_system
                 self.target_component = target_component
-                self.setup_flag = setup_flag
+                self.status_flag = status_flag
 
         def pack(self, mav, force_mavlink1=False):
-                return MAVLink_message.pack(self, mav, 56, struct.pack('<BBBBB', self.sys_id, self.comp_id, self.target_system, self.target_component, self.setup_flag), force_mavlink1=force_mavlink1)
+                return MAVLink_message.pack(self, mav, 120, struct.pack('<BBBBB', self.sys_id, self.comp_id, self.target_system, self.target_component, self.status_flag), force_mavlink1=force_mavlink1)
 
 class MAVLink_mavsh_ack_message(MAVLink_message):
         '''
@@ -8039,23 +8039,23 @@ class MAVLink_mavsh_ack_message(MAVLink_message):
         '''
         id = MAVLINK_MSG_ID_MAVSH_ACK
         name = 'MAVSH_ACK'
-        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
-        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'setup_flag']
+        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status_flag']
+        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status_flag']
         fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t']
         fielddisplays_by_name = {}
-        fieldenums_by_name = {"setup_flag": "MAVSH_SETUP"}
+        fieldenums_by_name = {"status_flag": "MAVSH_STATUS"}
         fieldunits_by_name = {}
         format = '<BBBBB'
         native_format = bytearray('<BBBBB', 'ascii')
         orders = [0, 1, 2, 3, 4]
         lengths = [1, 1, 1, 1, 1]
         array_lengths = [0, 0, 0, 0, 0]
-        crc_extra = 185
+        crc_extra = 147
         unpacker = struct.Struct('<BBBBB')
         instance_field = None
         instance_offset = -1
 
-        def __init__(self, sys_id, comp_id, target_system, target_component, setup_flag):
+        def __init__(self, sys_id, comp_id, target_system, target_component, status_flag):
                 MAVLink_message.__init__(self, MAVLink_mavsh_ack_message.id, MAVLink_mavsh_ack_message.name)
                 self._fieldnames = MAVLink_mavsh_ack_message.fieldnames
                 self._instance_field = MAVLink_mavsh_ack_message.instance_field
@@ -8064,10 +8064,10 @@ class MAVLink_mavsh_ack_message(MAVLink_message):
                 self.comp_id = comp_id
                 self.target_system = target_system
                 self.target_component = target_component
-                self.setup_flag = setup_flag
+                self.status_flag = status_flag
 
         def pack(self, mav, force_mavlink1=False):
-                return MAVLink_message.pack(self, mav, 185, struct.pack('<BBBBB', self.sys_id, self.comp_id, self.target_system, self.target_component, self.setup_flag), force_mavlink1=force_mavlink1)
+                return MAVLink_message.pack(self, mav, 147, struct.pack('<BBBBB', self.sys_id, self.comp_id, self.target_system, self.target_component, self.status_flag), force_mavlink1=force_mavlink1)
 
 class MAVLink_mavsh_synack_message(MAVLink_message):
         '''
@@ -8110,23 +8110,23 @@ class MAVLink_mavsh_exec_message(MAVLink_message):
         '''
         id = MAVLINK_MSG_ID_MAVSH_EXEC
         name = 'MAVSH_EXEC'
-        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status', 'payload']
-        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status', 'payload']
+        fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status_flag', 'payload']
+        ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'status_flag', 'payload']
         fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'char']
         fielddisplays_by_name = {}
-        fieldenums_by_name = {"status": "MAVSH_STATUS"}
+        fieldenums_by_name = {"status_flag": "MAVSH_STATUS"}
         fieldunits_by_name = {}
         format = '<BBBBB154s'
         native_format = bytearray('<BBBBBc', 'ascii')
         orders = [0, 1, 2, 3, 4, 5]
         lengths = [1, 1, 1, 1, 1, 1]
         array_lengths = [0, 0, 0, 0, 0, 154]
-        crc_extra = 125
+        crc_extra = 210
         unpacker = struct.Struct('<BBBBB154s')
         instance_field = None
         instance_offset = -1
 
-        def __init__(self, sys_id, comp_id, target_system, target_component, status, payload):
+        def __init__(self, sys_id, comp_id, target_system, target_component, status_flag, payload):
                 MAVLink_message.__init__(self, MAVLink_mavsh_exec_message.id, MAVLink_mavsh_exec_message.name)
                 self._fieldnames = MAVLink_mavsh_exec_message.fieldnames
                 self._instance_field = MAVLink_mavsh_exec_message.instance_field
@@ -8135,11 +8135,11 @@ class MAVLink_mavsh_exec_message(MAVLink_message):
                 self.comp_id = comp_id
                 self.target_system = target_system
                 self.target_component = target_component
-                self.status = status
+                self.status_flag = status_flag
                 self.payload = payload
 
         def pack(self, mav, force_mavlink1=False):
-                return MAVLink_message.pack(self, mav, 125, struct.pack('<BBBBB154s', self.sys_id, self.comp_id, self.target_system, self.target_component, self.status, self.payload), force_mavlink1=force_mavlink1)
+                return MAVLink_message.pack(self, mav, 210, struct.pack('<BBBBB154s', self.sys_id, self.comp_id, self.target_system, self.target_component, self.status_flag, self.payload), force_mavlink1=force_mavlink1)
 
 class MAVLink_mavsh_response_message(MAVLink_message):
         '''
@@ -8188,7 +8188,7 @@ class MAVLink_mavsh_shutdown_message(MAVLink_message):
         ordered_fieldnames = ['sys_id', 'comp_id', 'target_system', 'target_component', 'shutdown_flag']
         fieldtypes = ['uint8_t', 'uint8_t', 'uint8_t', 'uint8_t', 'uint8_t']
         fielddisplays_by_name = {}
-        fieldenums_by_name = {"shutdown_flag": "MAVSH_STATUS"}
+        fieldenums_by_name = {"shutdown_flag": "MAVSH_SHUTDOWN_STATUS"}
         fieldunits_by_name = {}
         format = '<BBBBB'
         native_format = bytearray('<BBBBB', 'ascii')
@@ -17833,7 +17833,7 @@ class MAVLink(object):
                 '''
                 return self.send(self.obstacle_distance_3d_encode(time_boot_ms, sensor_type, frame, obstacle_id, x, y, z, min_distance, max_distance), force_mavlink1=force_mavlink1)
 
-        def mavsh_init_encode(self, sys_id, comp_id, target_system, target_component, setup_flag):
+        def mavsh_init_encode(self, sys_id, comp_id, target_system, target_component, status_flag):
                 '''
                 Initialize MAVSH command mode
 
@@ -17841,12 +17841,12 @@ class MAVLink(object):
                 comp_id                   : Origin component id (type:uint8_t)
                 target_system             : Target system id (type:uint8_t)
                 target_component          : Target component id (type:uint8_t)
-                setup_flag                :  (type:uint8_t, values:MAVSH_SETUP>)
+                status_flag               :  (type:uint8_t, values:MAVSH_STATUS>)
 
                 '''
-                return MAVLink_mavsh_init_message(sys_id, comp_id, target_system, target_component, setup_flag)
+                return MAVLink_mavsh_init_message(sys_id, comp_id, target_system, target_component, status_flag)
 
-        def mavsh_init_send(self, sys_id, comp_id, target_system, target_component, setup_flag, force_mavlink1=False):
+        def mavsh_init_send(self, sys_id, comp_id, target_system, target_component, status_flag, force_mavlink1=False):
                 '''
                 Initialize MAVSH command mode
 
@@ -17854,25 +17854,12 @@ class MAVLink(object):
                 comp_id                   : Origin component id (type:uint8_t)
                 target_system             : Target system id (type:uint8_t)
                 target_component          : Target component id (type:uint8_t)
-                setup_flag                :  (type:uint8_t, values:MAVSH_SETUP>)
+                status_flag               :  (type:uint8_t, values:MAVSH_STATUS>)
 
                 '''
-                return self.send(self.mavsh_init_encode(sys_id, comp_id, target_system, target_component, setup_flag), force_mavlink1=force_mavlink1)
+                return self.send(self.mavsh_init_encode(sys_id, comp_id, target_system, target_component, status_flag), force_mavlink1=force_mavlink1)
 
-        def mavsh_ack_encode(self, sys_id, comp_id, target_system, target_component, setup_flag):
-                '''
-                ACK initialization of MAVSH command mode
-
-                sys_id                    : Origin system id (type:uint8_t)
-                comp_id                   : Origin component id (type:uint8_t)
-                target_system             : Target system id (type:uint8_t)
-                target_component          : Target component id (type:uint8_t)
-                setup_flag                :  (type:uint8_t, values:MAVSH_SETUP)
-
-                '''
-                return MAVLink_mavsh_ack_message(sys_id, comp_id, target_system, target_component, setup_flag)
-
-        def mavsh_ack_send(self, sys_id, comp_id, target_system, target_component, setup_flag, force_mavlink1=False):
+        def mavsh_ack_encode(self, sys_id, comp_id, target_system, target_component, status_flag):
                 '''
                 ACK initialization of MAVSH command mode
 
@@ -17880,10 +17867,23 @@ class MAVLink(object):
                 comp_id                   : Origin component id (type:uint8_t)
                 target_system             : Target system id (type:uint8_t)
                 target_component          : Target component id (type:uint8_t)
-                setup_flag                :  (type:uint8_t, values:MAVSH_SETUP)
+                status_flag               :  (type:uint8_t, values:MAVSH_STATUS)
 
                 '''
-                return self.send(self.mavsh_ack_encode(sys_id, comp_id, target_system, target_component, setup_flag), force_mavlink1=force_mavlink1)
+                return MAVLink_mavsh_ack_message(sys_id, comp_id, target_system, target_component, status_flag)
+
+        def mavsh_ack_send(self, sys_id, comp_id, target_system, target_component, status_flag, force_mavlink1=False):
+                '''
+                ACK initialization of MAVSH command mode
+
+                sys_id                    : Origin system id (type:uint8_t)
+                comp_id                   : Origin component id (type:uint8_t)
+                target_system             : Target system id (type:uint8_t)
+                target_component          : Target component id (type:uint8_t)
+                status_flag               :  (type:uint8_t, values:MAVSH_STATUS)
+
+                '''
+                return self.send(self.mavsh_ack_encode(sys_id, comp_id, target_system, target_component, status_flag), force_mavlink1=force_mavlink1)
 
         def mavsh_synack_encode(self, sys_id, comp_id, target_system, target_component):
                 '''
@@ -17909,7 +17909,7 @@ class MAVLink(object):
                 '''
                 return self.send(self.mavsh_synack_encode(sys_id, comp_id, target_system, target_component), force_mavlink1=force_mavlink1)
 
-        def mavsh_exec_encode(self, sys_id, comp_id, target_system, target_component, status, payload):
+        def mavsh_exec_encode(self, sys_id, comp_id, target_system, target_component, status_flag, payload):
                 '''
                 Execute a command on companion computer
 
@@ -17917,13 +17917,13 @@ class MAVLink(object):
                 comp_id                   : Origin component id (type:uint8_t)
                 target_system             : Target system id (type:uint8_t)
                 target_component          : Target component id (type:uint8_t)
-                status                    : MAVSH status (type:uint8_t, values:MAVSH_STATUS)
+                status_flag               : MAVSH status (type:uint8_t, values:MAVSH_STATUS)
                 payload                   : Command to execute (type:char)
 
                 '''
-                return MAVLink_mavsh_exec_message(sys_id, comp_id, target_system, target_component, status, payload)
+                return MAVLink_mavsh_exec_message(sys_id, comp_id, target_system, target_component, status_flag, payload)
 
-        def mavsh_exec_send(self, sys_id, comp_id, target_system, target_component, status, payload, force_mavlink1=False):
+        def mavsh_exec_send(self, sys_id, comp_id, target_system, target_component, status_flag, payload, force_mavlink1=False):
                 '''
                 Execute a command on companion computer
 
@@ -17931,11 +17931,11 @@ class MAVLink(object):
                 comp_id                   : Origin component id (type:uint8_t)
                 target_system             : Target system id (type:uint8_t)
                 target_component          : Target component id (type:uint8_t)
-                status                    : MAVSH status (type:uint8_t, values:MAVSH_STATUS)
+                status_flag               : MAVSH status (type:uint8_t, values:MAVSH_STATUS)
                 payload                   : Command to execute (type:char)
 
                 '''
-                return self.send(self.mavsh_exec_encode(sys_id, comp_id, target_system, target_component, status, payload), force_mavlink1=force_mavlink1)
+                return self.send(self.mavsh_exec_encode(sys_id, comp_id, target_system, target_component, status_flag, payload), force_mavlink1=force_mavlink1)
 
         def mavsh_response_encode(self, sys_id, comp_id, target_system, target_component, cmd_status, response):
                 '''
@@ -17973,7 +17973,7 @@ class MAVLink(object):
                 comp_id                   : Origin component id (type:uint8_t)
                 target_system             : Target system id (type:uint8_t)
                 target_component          : Target component id (type:uint8_t)
-                shutdown_flag             : Teardown flags (type:uint8_t, values:MAVSH_STATUS)
+                shutdown_flag             : Shutdown flags (type:uint8_t, values:MAVSH_SHUTDOWN_STATUS)
 
                 '''
                 return MAVLink_mavsh_shutdown_message(sys_id, comp_id, target_system, target_component, shutdown_flag)
@@ -17986,7 +17986,7 @@ class MAVLink(object):
                 comp_id                   : Origin component id (type:uint8_t)
                 target_system             : Target system id (type:uint8_t)
                 target_component          : Target component id (type:uint8_t)
-                shutdown_flag             : Teardown flags (type:uint8_t, values:MAVSH_STATUS)
+                shutdown_flag             : Shutdown flags (type:uint8_t, values:MAVSH_SHUTDOWN_STATUS)
 
                 '''
                 return self.send(self.mavsh_shutdown_encode(sys_id, comp_id, target_system, target_component, shutdown_flag), force_mavlink1=force_mavlink1)
